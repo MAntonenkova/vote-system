@@ -20,3 +20,8 @@ VALUES ('Pumpkin cream soup', 450, 1),
        ('Super breakfast with beer', 990, 8),
        ('Croissant', 99, 9),
        ('Сappuccino', 150, 9);
+
+INSERT INTO vs_users (user_name, user_password, user_role)
+VALUES ('Anton', 'password', 'USER'),
+       ('Victoria', 'password', 'USER'),
+       ('Nikita', 'password', 'ADMIN');
