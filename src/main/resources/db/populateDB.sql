@@ -11,6 +11,8 @@ VALUES ('Geraldine'),
 
 INSERT INTO vs_dishes (dish_name, dish_price, rest_id)
 VALUES ('Pumpkin cream soup', 450, 1),
+       ('Oatmeal porrige with backed milk, candied fruits, nuts and dried fruits', 380, 1),
+       ('Three fried eggs', 180, 1),
        ('Wild west chicken', 590, 2),
        ('Saute of zucchini', 260, 3),
        ('Sweet dumplings with cherries', 260, 4),
