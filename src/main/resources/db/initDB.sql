@@ -22,12 +22,13 @@ CREATE TABLE vs_dishes
 
 CREATE TABLE vs_votes
 (
-    vote_id        SERIAL,
-    user_id        INTEGER                 NOT NULL,
-    rest_id        INTEGER                 NOT NULL,
-    vote_date_time TIMESTAMP DEFAULT now() NOT NULL,
+    vote_id   SERIAL,
+    rest_id   INTEGER            NOT NULL,
+    user_id   INTEGER            NOT NULL,
+    vote_date DATE DEFAULT now() NOT NULL,
+    vote_time TIME DEFAULT now() NOT NULL,
     PRIMARY KEY (vote_id),
-    FOREIGN KEY (rest_id) REFERENCES vs_restaurants(rest_id) ON DELETE RESTRICT
+    FOREIGN KEY (rest_id) REFERENCES vs_restaurants (rest_id) ON DELETE RESTRICT
 );
 
 CREATE TABLE vs_users

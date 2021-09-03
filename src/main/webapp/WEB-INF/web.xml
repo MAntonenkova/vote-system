@@ -12,7 +12,7 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            /WEB-INF/classes/springContext.xml
+            classpath:spring/springContext.xml
         </param-value>
     </context-param>
 
@@ -36,5 +36,4 @@
         <servlet-name>JerseyServlet</servlet-name>
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
-
 </web-app>

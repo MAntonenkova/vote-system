@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,12 +24,14 @@ public class VoteService {
 
     @Transactional
     public VoteResponse getVoteCount(VoteRequest request) {
-        List<Vote> votes = repository.getVotes(request.getRestaurantName(), LocalDateTime.now());
-
-        // TODO загрузить все, что нужно, в response
-
+        LOGGER.info("getting votes for restaurant: {}", request.getRestaurantName());
+        List<Vote> votes = repository.getVotes(request.getRestaurantName(), request.getVoteDate());
+        int votesCount = votes.size();
 
         VoteResponse response = new VoteResponse();
+        response.setSuccess(true);
+        response.setRestaurantName(request.getRestaurantName());
+        response.setVotesCountToday(votesCount);
         return response;
     }
 }

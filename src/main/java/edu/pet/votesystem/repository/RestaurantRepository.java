@@ -13,6 +13,6 @@ import java.util.List;
 public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
 
     @Query("SELECT dish FROM Dish dish JOIN Restaurant rest ON dish.restaurant.restaurantId = rest.restaurantId" +
-            " WHERE rest.restaurantName = :restaurantName")
+            " WHERE lower(rest.restaurantName)  = lower(:restaurantName) ")
     List<Dish> findDishes(@Param("restaurantName") String restaurantName);
 }

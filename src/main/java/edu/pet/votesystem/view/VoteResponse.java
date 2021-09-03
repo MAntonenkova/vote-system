@@ -8,6 +8,7 @@ public class VoteResponse {
 
     private Boolean success;
     private Integer votesCountToday;
+    private String restaurantName;
 
     public Boolean getSuccess() {
         return success;
@@ -23,5 +24,13 @@ public class VoteResponse {
 
     public void setVotesCountToday(Integer votesCountToday) {
         this.votesCountToday = votesCountToday;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 }

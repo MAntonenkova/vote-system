@@ -1,7 +1,8 @@
 package edu.pet.votesystem.model;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Table(name = "vs_votes")
 @Entity
@@ -16,8 +17,10 @@ public class Vote {
     private Restaurant restaurant;
     @Column (name = "user_id")
     private String userId;
-    @Column (name = "vote_date_time")
-    private LocalDateTime voteDateTime;
+    @Column (name = "vote_date")
+    private LocalDate voteDate;
+    @Column (name = "vote_time")
+    private LocalTime voteTime;
 
     public Integer getVoteId() {
         return voteId;
@@ -43,11 +46,19 @@ public class Vote {
         this.userId = userId;
     }
 
-    public LocalDateTime getVoteDateTime() {
-        return voteDateTime;
+    public LocalDate getVoteDate() {
+        return voteDate;
     }
 
-    public void setVoteDateTime(LocalDateTime voteDateTime) {
-        this.voteDateTime = voteDateTime;
+    public void setVoteDate(LocalDate voteDate) {
+        this.voteDate = voteDate;
+    }
+
+    public LocalTime getVoteTime() {
+        return voteTime;
+    }
+
+    public void setVoteTime(LocalTime voteTime) {
+        this.voteTime = voteTime;
     }
 }

@@ -3,12 +3,13 @@ package edu.pet.votesystem.view;
 import edu.pet.votesystem.util.LocalDateTimeAdapter;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class VoteRequest {
     private String restaurantName;
     @XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class)
-    private LocalDateTime voteDateTime;
+    private LocalDate voteDate;
     // по идее дата - LocalDateTime.now();
     private String userName;
 
@@ -20,12 +21,12 @@ public class VoteRequest {
         this.restaurantName = restaurantName;
     }
 
-    public LocalDateTime getVoteDateTime() {
-        return voteDateTime;
+    public LocalDate getVoteDate() {
+        return voteDate;
     }
 
-    public void setVoteDateTime(LocalDateTime voteDateTime) {
-        this.voteDateTime = voteDateTime;
+    public void setVoteDate(LocalDate voteDate) {
+        this.voteDate = voteDate;
     }
 
     public String getUserName() {
