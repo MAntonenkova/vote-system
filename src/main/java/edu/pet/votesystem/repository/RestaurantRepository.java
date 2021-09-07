@@ -15,4 +15,9 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
     @Query("SELECT dish FROM Dish dish JOIN Restaurant rest ON dish.restaurant.restaurantId = rest.restaurantId" +
             " WHERE lower(rest.restaurantName)  = lower(:restaurantName) ")
     List<Dish> findDishes(@Param("restaurantName") String restaurantName);
+
+
+    @Query(name = "Restaurant.findAllWithDishes",
+    value = "SELECT rest FROM Restaurant rest LEFT JOIN FETCH rest.dishes")
+    List<Restaurant> findFullRestaurantList();
 }

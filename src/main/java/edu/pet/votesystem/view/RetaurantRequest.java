@@ -1,6 +1,6 @@
 package edu.pet.votesystem.view;
 
-public class RestaurantRequest {
+public class RetaurantRequest {
     private String restaurantName;
     private String dishName;
     private Integer dishPrice;
