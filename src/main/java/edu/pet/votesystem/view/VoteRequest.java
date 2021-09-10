@@ -1,15 +1,20 @@
 package edu.pet.votesystem.view;
 
-import edu.pet.votesystem.util.LocalDateTimeAdapter;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import edu.pet.votesystem.util.LocalDateStringConverter;
+import edu.pet.votesystem.util.StringLocalDateConverter;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class VoteRequest {
     private String restaurantName;
-    @XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class)
-    private LocalDate voteDate;
+    // @XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class)
+    @JsonSerialize(converter = LocalDateStringConverter.class)
+    @JsonDeserialize(converter = StringLocalDateConverter.class)
+    // TODO: дату перевести из LocalDate в LocalDateTime
+    private LocalDateTime voteDateTime;
     // по идее дата - LocalDateTime.now();
     private String userName;
 
@@ -21,12 +26,12 @@ public class VoteRequest {
         this.restaurantName = restaurantName;
     }
 
-    public LocalDate getVoteDate() {
-        return voteDate;
+    public LocalDateTime getVoteDateTime() {
+        return voteDateTime;
     }
 
-    public void setVoteDate(LocalDate voteDate) {
-        this.voteDate = voteDate;
+    public void setVoteDateTime(LocalDateTime voteDateTime) {
+        this.voteDateTime = voteDateTime;
     }
 
     public String getUserName() {

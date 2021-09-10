@@ -1,5 +1,13 @@
 package edu.pet.votesystem.view;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import edu.pet.votesystem.util.LocalDateStringConverter;
+import edu.pet.votesystem.util.StringLocalDateConverter;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class VoteResponse {
 
     // 1 успешно проголосовал или уже поздно
@@ -9,6 +17,9 @@ public class VoteResponse {
     private Boolean success;
     private Integer votesCountToday;
     private String restaurantName;
+    @JsonSerialize(converter = LocalDateStringConverter.class)
+    @JsonDeserialize(converter = StringLocalDateConverter.class)
+    private LocalDateTime dateTime;
 
     public Boolean getSuccess() {
         return success;
@@ -32,5 +43,13 @@ public class VoteResponse {
 
     public void setRestaurantName(String restaurantName) {
         this.restaurantName = restaurantName;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 }

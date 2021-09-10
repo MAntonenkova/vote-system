@@ -13,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/springContext.xml"})
@@ -28,7 +29,7 @@ public class VoteServiceTest {
         VoteRequest request = new VoteRequest();
         request.setRestaurantName("apartment 44");
         //  request.setVoteDate(LocalDate.now());
-        request.setVoteDate(LocalDate.of(2021, 8, 28));
+        request.setVoteDateTime(LocalDateTime.of(2021, 8, 28, 12, 30));
 
         VoteResponse response = controller.getVotingResult(request);
         int voteCount = response.getVotesCountToday();

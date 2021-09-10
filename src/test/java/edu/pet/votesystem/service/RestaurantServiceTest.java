@@ -3,7 +3,7 @@ package edu.pet.votesystem.service;
 import edu.pet.votesystem.model.Dish;
 import edu.pet.votesystem.model.Restaurant;
 import edu.pet.votesystem.rest.RestaurantController;
-import edu.pet.votesystem.view.RetaurantRequest;
+import edu.pet.votesystem.view.RestaurantRequest;
 import edu.pet.votesystem.view.RestaurantResponse;
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class RestaurantServiceTest {
 
     @Test
     public void restaurantInfo(){
-        RetaurantRequest request = new RetaurantRequest();
+        RestaurantRequest request = new RestaurantRequest();
         request.setRestaurantName("Geraldine");
 
         RestaurantResponse restaurantInfo = controller.getRestaurantInfo(request);

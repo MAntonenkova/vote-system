@@ -25,7 +25,7 @@ public class VoteService {
     @Transactional
     public VoteResponse getVoteCount(VoteRequest request) {
         LOGGER.info("getting votes for restaurant: {}", request.getRestaurantName());
-        List<Vote> votes = repository.getVotes(request.getRestaurantName(), request.getVoteDate());
+        List<Vote> votes = repository.getVotes(request.getRestaurantName(), request.getVoteDateTime().toLocalDate());
         int votesCount = votes.size();
 
         VoteResponse response = new VoteResponse();

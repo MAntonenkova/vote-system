@@ -4,7 +4,7 @@ import edu.pet.votesystem.model.Dish;
 import edu.pet.votesystem.model.Restaurant;
 import edu.pet.votesystem.repository.DishRepository;
 import edu.pet.votesystem.repository.RestaurantRepository;
-import edu.pet.votesystem.view.RetaurantRequest;
+import edu.pet.votesystem.view.RestaurantRequest;
 import edu.pet.votesystem.view.RestaurantResponse;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public class RestaurantService {
     DishRepository dishRepository;
 
     @Transactional
-    public RestaurantResponse getRestaurantInfo(RetaurantRequest request) {
+    public RestaurantResponse getRestaurantInfo(RestaurantRequest request) {
         List<Dish> dishes = repository.findDishes(request.getRestaurantName());
 
         if (dishes.isEmpty()) {

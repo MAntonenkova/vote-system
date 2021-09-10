@@ -15,7 +15,7 @@
 
         <spring.version>5.3.9</spring.version>
         <spring-data.version>2.2.1.RELEASE</spring-data.version>
-        <jackson.version>2.11.3</jackson.version>
+        <jackson.version>2.12.3</jackson.version>
         <slf4j.version>1.7.28</slf4j.version>
 
         <jersey.version>2.34</jersey.version>
@@ -73,6 +73,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+<!--        <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet</artifactId>
             <version>${jersey.version}</version>
@@ -91,7 +97,7 @@
             <groupId>org.glassfish.jersey.ext</groupId>
             <artifactId>jersey-spring5</artifactId>
             <version>${jersey.version}</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>jstl</groupId>
