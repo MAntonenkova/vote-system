@@ -1,6 +1,6 @@
 package edu.pet.votesystem.service;
 
-import edu.pet.votesystem.rest.VoteController;
+import edu.pet.votesystem.rest.VoteControllerOld;
 import edu.pet.votesystem.view.VoteRequest;
 import edu.pet.votesystem.view.VoteResponse;
 import org.junit.Assert;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RunWith(SpringRunner.class)
@@ -22,7 +21,7 @@ public class VoteServiceTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(RestaurantServiceTest.class);
 
     @Autowired
-    VoteController controller;
+    VoteControllerOld controller;
 
     @Test
     public void voteInfo() {

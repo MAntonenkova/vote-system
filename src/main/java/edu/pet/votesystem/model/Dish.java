@@ -1,6 +1,7 @@
 package edu.pet.votesystem.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Table(name = "vs_dishes")
 @Entity
@@ -8,14 +9,14 @@ public class Dish {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name = "dish_id")
+    @Column(name = "dish_id")
     private Integer dishId;
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id")
     private Restaurant restaurant;
-    @Column (name = "dish_name")
+    @Column(name = "dish_name")
     private String dishName;
-    @Column (name = "dish_price")
+    @Column(name = "dish_price")
     private Integer price;
 
     public Integer getDishId() {
@@ -49,4 +50,5 @@ public class Dish {
     public void setPrice(Integer price) {
         this.price = price;
     }
+
 }

@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
-@RequestMapping(path = "/restaurants")
+@RequestMapping(path = "/restaurantss")
 public class RestaurantListController {
 
     @Autowired

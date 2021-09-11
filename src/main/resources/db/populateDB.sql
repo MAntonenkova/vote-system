@@ -7,7 +7,8 @@ VALUES ('Geraldine'),
        ('Boston seafood & bar'),
        ('White rabbit'),
        ('Beer & brut'),
-       ('Caravaevy brothers ');
+       ('Caravaevy brothers'),
+       ('Prazhechka');
 
 INSERT INTO vs_dishes (dish_name, dish_price, rest_id)
 VALUES ('Pumpkin cream soup', 450, 1),
@@ -21,6 +22,7 @@ VALUES ('Pumpkin cream soup', 450, 1),
        ('Shrimp gambero rosso', 2400, 7),
        ('Super breakfast with beer', 990, 8),
        ('Croissant', 99, 9),
+       ('Bonbon', 150, 9),
        ('Сapuccino', 150, 9);
 
 INSERT INTO vs_users (user_name, user_password, user_role)
@@ -50,7 +52,6 @@ VALUES (3, 4, '2021-08-28'),
 INSERT INTO vs_votes (rest_id, user_id, vote_time)
 VALUES (3, 9, '17:00:00'),
        (4, 8, '17:39:00');
-
 
 
 -- с индексами разобраться

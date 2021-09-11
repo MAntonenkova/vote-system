@@ -5,6 +5,7 @@ import edu.pet.votesystem.model.Restaurant;
 import edu.pet.votesystem.rest.RestaurantController;
 import edu.pet.votesystem.view.RestaurantRequest;
 import edu.pet.votesystem.view.RestaurantResponse;
+import edu.pet.votesystem.view.RestaurantsResponse;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +28,7 @@ public class RestaurantServiceTest {
     @Autowired
     private RestaurantService service;
 
-
+// delete
     @Test
     public void restaurantInfo(){
         RestaurantRequest request = new RestaurantRequest();
@@ -37,6 +38,7 @@ public class RestaurantServiceTest {
         Assert.assertEquals(3, restaurantInfo.getDishes().size());
     }
 
+    // delete
     @Test
     public void findRestaurants() {
         List<Restaurant> restaurants = service.findRestaurants();
@@ -44,6 +46,7 @@ public class RestaurantServiceTest {
         restaurants.forEach(r -> System.out.println(r.getRestaurantId() + r.getRestaurantName() + r.getDishes().size()));
     }
 
+    // delete
     @Test
     public void findDishes(){
         List<Dish> dishes = service.findDishes();
@@ -51,16 +54,30 @@ public class RestaurantServiceTest {
         dishes.forEach(d -> System.out.println(d.getRestaurant().getRestaurantName()));
     }
 
+    // delete
     @Test
     public void findDish(){
         Dish dish = service.getDish(8);
         System.out.println(dish.getRestaurant().getRestaurantName());
     }
 
+    // delete
     @Test
     public void findRestaurantsWithDishes() {
         List<Restaurant> restaurants = service.findFullRestaurants();
         System.out.println("OK");
         restaurants.forEach(r -> System.out.println(r.getRestaurantId() + ", "  + r.getRestaurantName()+ ", " + r.getDishes().size()));
+    }
+
+    @Test
+    public void getAllRestaurants(){
+        List<RestaurantsResponse> restaurants = service.getAllRestaurants();
+        Assert.assertEquals(9, restaurants.size());
+    }
+
+    @Test
+    public void getRestaurant(){
+        RestaurantsResponse restaurant = service.getRestaurant(9);
+        Assert.assertEquals(3, restaurant.getDishes().size());
     }
 }
