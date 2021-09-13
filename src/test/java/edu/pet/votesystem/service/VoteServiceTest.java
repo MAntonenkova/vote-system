@@ -1,8 +1,6 @@
 package edu.pet.votesystem.service;
 
-import edu.pet.votesystem.rest.VoteControllerOld;
-import edu.pet.votesystem.view.VoteRequest;
-import edu.pet.votesystem.view.VoteResponse;
+import edu.pet.votesystem.view.VotesResponse;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,28 +10,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/springContext.xml"})
 public class VoteServiceTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestaurantServiceTest.class);
-
     @Autowired
-    VoteControllerOld controller;
+    VoteService service;
 
     @Test
-    public void voteInfo() {
-        VoteRequest request = new VoteRequest();
-        request.setRestaurantName("apartment 44");
-        //  request.setVoteDate(LocalDate.now());
-        request.setVoteDateTime(LocalDateTime.of(2021, 8, 28, 12, 30));
-
-        VoteResponse response = controller.getVotingResult(request);
-        int voteCount = response.getVotesCountToday();
-
-        LOGGER.info("Vote's count for restaurant {} = {} for today", voteCount, response.getRestaurantName());
-        Assert.assertEquals(5, voteCount);
+    public void getVotes(){
+        LocalDate localDate = LocalDate.of(2021, 9,13);
+        List<VotesResponse> votes = service.getVotes(LocalDate.now());
+        String restaurantName = votes.get(1).getRestaurantName();
+        int counts = votes.get(1).getVotesCountToday();
+        Assert.assertEquals("Odessa mama", restaurantName);
+        Assert.assertEquals(5, counts);
     }
 }

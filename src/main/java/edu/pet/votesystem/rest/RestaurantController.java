@@ -79,9 +79,7 @@ public class RestaurantController {
         return service.deleteDish(dishId);
     }
 
-
     // ------------------
-
     @GetMapping("/check")
     public String checkAdmin() {
         return "Rest service is working";
@@ -93,12 +91,6 @@ public class RestaurantController {
     public RestaurantResponse getRestaurantInfo(@RequestBody RestaurantRequest request) {
         return service.getRestaurantInfo(request);
     }
-//TODO: request correct
- /*   {
-        "restaurantName": "Odessa mama",
-            "dishName": "Sorrel soup with egg",
-            "price" : "390"
-    }*/
 
     //http://localhost:8080/votesystem/restaurants/params/1
     @GetMapping("/params/{checkId}")
@@ -112,6 +104,5 @@ public class RestaurantController {
     public String checkParameters2(@RequestParam("comment") String comment) {
         return comment;
     }
-
 
 }

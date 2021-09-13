@@ -1,36 +1,35 @@
 package edu.pet.votesystem.rest;
 
 import edu.pet.votesystem.service.VoteService;
-import edu.pet.votesystem.view.VoteRequest;
-import edu.pet.votesystem.view.VoteResponse;
+import edu.pet.votesystem.view.DateRequest;
+import edu.pet.votesystem.view.VotesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
-@RequestMapping("/votes")
 public class VoteController {
 
     @Autowired
     VoteService service;
 
     //http://localhost:8080/votesystem/votes
-
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public VoteResponse getVotingResult(@RequestBody VoteRequest request) {
-        return service.getVoteCount(request);
-        // TODO: проверить, то ли возвращает контроллер
+    @GetMapping(path = "/votes", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<VotesResponse> getVotingResult() {
+        LocalDate today = LocalDate.now();
+        return service.getVotes(today);
     }
 
+    //http://localhost:8080/votesystem/votes
 /*    {
-        "restaurantName": "Odessa mama",
-            "voteDateTime": "03.09.2021 : 15.00",
-            "userName" : "Alice"
+        "voteDate" : "13.09.2021"
     }*/
-
+    @PostMapping(path = "/votes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<VotesResponse> getVotingResult(@RequestBody DateRequest request) {
+        return service.getVotes(request.getVoteDate());
+    }
 
 }

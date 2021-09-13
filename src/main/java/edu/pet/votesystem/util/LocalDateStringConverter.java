@@ -2,15 +2,15 @@ package edu.pet.votesystem.util;
 
 import com.fasterxml.jackson.databind.util.StdConverter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class LocalDateStringConverter extends StdConverter<LocalDateTime, String> {
+public class LocalDateStringConverter extends StdConverter<LocalDate, String> {
 
-    static final String DATE_TIME_FORMAT = "dd.MM.yyyy : HH.mm";
+    static final String DATE_FORMAT = "dd.MM.yyyy";
 
     @Override
-    public String convert(LocalDateTime localDateTime) {
-        return localDateTime == null ? "" : localDateTime.format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
+    public String convert(LocalDate localDate) {
+        return localDate == null ? "" : localDate.format(DateTimeFormatter.ofPattern(DATE_FORMAT));
     }
 }

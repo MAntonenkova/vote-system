@@ -47,7 +47,10 @@ VALUES (3, 1, '2021-08-28', '16:00:00'),
 
 INSERT INTO vs_votes (rest_id, user_id, vote_date)
 VALUES (3, 4, '2021-08-28'),
-       (4, 5, '2020-09-03');
+       (4, 5, '2021-09-13'),
+       (4, 5, '2021-09-13'),
+       (4, 1, '2021-09-13'),
+       (4, 2, '2021-09-13');
 
 INSERT INTO vs_votes (rest_id, user_id, vote_time)
 VALUES (3, 9, '17:00:00'),
