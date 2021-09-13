@@ -2,12 +2,10 @@ package edu.pet.votesystem.service;
 
 import edu.pet.votesystem.model.Dish;
 import edu.pet.votesystem.model.Restaurant;
+import edu.pet.votesystem.util.Result;
 import edu.pet.votesystem.repository.DishRepository;
 import edu.pet.votesystem.repository.RestaurantRepository;
-import edu.pet.votesystem.view.DishResponse;
-import edu.pet.votesystem.view.RestaurantRequest;
-import edu.pet.votesystem.view.RestaurantResponse;
-import edu.pet.votesystem.view.RestaurantsResponse;
+import edu.pet.votesystem.view.*;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +30,7 @@ public class RestaurantService {
     @Autowired
     DishRepository dishRepository;
 
+    //delete
     @Transactional
     public RestaurantResponse getRestaurantInfo(RestaurantRequest request) {
         List<Dish> dishes = repository.findDishes(request.getRestaurantName());
@@ -47,7 +46,7 @@ public class RestaurantService {
     }
 
     // find all restaurants
-    @Transactional
+    @Transactional(readOnly = true)
     public List<RestaurantsResponse> getAllRestaurants() {
         LOGGER.info("Get all restaurants with it's menu");
         List<Restaurant> restaurants = repository.getAllRestaurants();
@@ -67,10 +66,9 @@ public class RestaurantService {
     }
 
     //find restaurant by id
-    @Transactional
+    @Transactional(readOnly = true)
     public RestaurantsResponse getRestaurant(Integer id) {
         RestaurantsResponse response = new RestaurantsResponse();
-
         LOGGER.info("Get restaurant with id = {}", id);
         Optional<Restaurant> fob = repository.findById(id);
         if (fob.isEmpty()) {
@@ -80,12 +78,86 @@ public class RestaurantService {
         response.setRestName(restaurant.getRestaurantName());
 
         List<Dish> dishes = restaurant.getDishes();
+        if (dishes == null || dishes.isEmpty()) {
+            return response;
+        }
         List<DishResponse> dishResponses = putDishesToDishResponse(dishes);
-
         response.setDishes(dishResponses);
         return response;
     }
 
+    //update restaurant's name or add new restaurant
+    @Transactional
+    public RestaurantsResponse updateRestaurant(Integer id, String name) {
+        if (id != null) {
+            LOGGER.info("Edit restaurant with name = {}", id);
+            repository.updateName(id, name);
+        } else {
+            LOGGER.info("Add new restaurant with name = {}", name);
+            Restaurant restaurant = new Restaurant();
+            restaurant.setRestaurantName(name);
+            restaurant = repository.save(restaurant);
+            id = (restaurant).getRestaurantId();
+        }
+
+        return getRestaurant(id);
+    }
+
+    //delete restaurant by id
+    @Transactional
+    public Result deleteRestaurant(int id) {
+        if (repository.findById(id).isEmpty()) {
+            return Result.NO_SUCH_ENTRY_EXIST;
+        }
+        LOGGER.info("Delete restaurant with id = {}", id);
+        repository.deleteById(id);
+        Optional<Restaurant> object = repository.findById(id);
+        if (object.isEmpty()) {
+            return Result.SUCCESS;
+        }
+        return Result.FAIL;
+    }
+
+    // add new dish
+    @Transactional
+    public Result addDish(Integer restId, DishRequest request) {
+        LOGGER.info("Add dish with name = {} and price = {} to restaurant with id = {}", request.getDishName(), request.getDishPrice(), restId);
+        Dish dish = new Dish();
+        dish.setDishName(request.getDishName());
+        dish.setPrice(request.getDishPrice());
+        Restaurant restaurant = repository.getOne(restId);
+        dish.setRestaurant(restaurant);
+
+        Integer dishId = (dishRepository.save(dish)).getDishId();
+        if (dishId > 0) {
+            return Result.SUCCESS;
+        }
+        return Result.FAIL;
+    }
+
+    // edit dish
+    @Transactional
+    public Result editDish(Integer restId, Integer dishId, DishRequest request){
+        LOGGER.info("Edit dish with id = {} and rest_id = {}", dishId, restId);
+        Dish dish = dishRepository.getOne(dishId);
+        if (dish == null){
+           return Result.FAIL;
+        }
+        dishRepository.updateDish(request.getDishName(), request.getDishPrice(), dishId);
+        return Result.SUCCESS;
+    }
+
+    //delete dish
+    @Transactional
+    public Result deleteDish(Integer dishId){
+        if (dishRepository.findById(dishId).isEmpty()) {
+            return Result.NO_SUCH_ENTRY_EXIST;
+        }
+        dishRepository.deleteById(dishId);
+        return Result.SUCCESS;
+    }
+
+    // ------------
     @Transactional
     public List<Restaurant> findRestaurants() {
         return repository.findAll();
