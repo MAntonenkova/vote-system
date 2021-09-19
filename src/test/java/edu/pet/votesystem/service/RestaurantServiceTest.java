@@ -20,14 +20,6 @@ public class RestaurantServiceTest {
     @Autowired
     private RestaurantService service;
 
-    // delete
-    @Test
-    public void findRestaurantsWithDishes() {
-        List<Restaurant> restaurants = service.findFullRestaurants();
-        System.out.println("OK");
-        restaurants.forEach(r -> System.out.println(r.getRestaurantId() + ", " + r.getRestaurantName() + ", " + r.getDishes().size()));
-    }
-
     @Test
     public void getAllRestaurants() {
         List<RestaurantsResponse> restaurants = service.getAllRestaurants();
@@ -41,14 +33,14 @@ public class RestaurantServiceTest {
     }
 
     @Test
-    public void addRestaurant() {
-        int restCount = service.findRestaurants().size();
+    public void addRestaurant() throws Exception {
+        int restCount = service.getAllRestaurants().size();
         service.updateRestaurant(null,"New restaurant");
-        Assert.assertEquals(++restCount, service.findRestaurants().size());
+        Assert.assertEquals(++restCount, service.getAllRestaurants().size());
     }
 
     @Test
-    public void editRestaurant(){
+    public void editRestaurant() throws Exception{
         String newName = "Mushrooms";
         service.updateRestaurant(1, newName);
         Assert.assertEquals(newName, service.getRestaurant(1).getRestName());

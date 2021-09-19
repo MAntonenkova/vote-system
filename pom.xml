@@ -15,6 +15,8 @@
 
         <spring.version>5.3.9</spring.version>
         <spring-data.version>2.2.1.RELEASE</spring-data.version>
+        <hibernate.version>5.4.22.Final</hibernate.version>
+        <hibernate-validator.version>6.1.6.Final</hibernate-validator.version>
         <jackson.version>2.12.3</jackson.version>
         <slf4j.version>1.7.28</slf4j.version>
 
@@ -26,7 +28,19 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.4.3.Final</version>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.0.Final</version>
         </dependency>
 
         <dependency>
@@ -77,27 +91,6 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
-<!--        <dependency>
-            <groupId>org.glassfish.jersey.containers</groupId>
-            <artifactId>jersey-container-servlet</artifactId>
-            <version>${jersey.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.inject</groupId>
-            <artifactId>jersey-hk2</artifactId>
-            <version>${jersey.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-json-jackson</artifactId>
-            <version>${jersey.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.ext</groupId>
-            <artifactId>jersey-spring5</artifactId>
-            <version>${jersey.version}</version>
-        </dependency>-->
 
         <dependency>
             <groupId>jstl</groupId>

@@ -1,6 +1,7 @@
 package edu.pet.votesystem.rest;
 
 import edu.pet.votesystem.service.VoteService;
+import edu.pet.votesystem.util.Result;
 import edu.pet.votesystem.view.DateRequest;
 import edu.pet.votesystem.view.VotesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,4 +33,9 @@ public class VoteController {
         return service.getVotes(request.getVoteDate());
     }
 
+    //http://localhost:8080/votesystem/vote?restId=1&userId=4
+    @PostMapping(path = "/vote", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Result vote(@RequestParam("restId") Integer restId, @RequestParam ("userId") Integer userId){
+        return service.vote(restId, userId);
+    }
 }

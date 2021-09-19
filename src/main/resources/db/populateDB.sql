@@ -25,17 +25,18 @@ VALUES ('Pumpkin cream soup', 450, 1),
        ('Bonbon', 150, 9),
        ('Сapuccino', 150, 9);
 
-INSERT INTO vs_users (user_name, user_password, user_role)
-VALUES ('Anton', 'password', 'USER'),
-       ('Victoria', 'password', 'USER'),
-       ('Alice', 'password', 'USER'),
-       ('Vasya', 'password', 'USER'),
-       ('Rudolf', 'password', 'USER'),
-       ('Nikita', 'password', 'USER'),
-       ('Arnold', 'password', 'USER'),
-       ('Donald', 'password', 'USER'),
-       ('Galechka', 'password', 'USER'),
-       ('Viktor', 'password', 'ADMIN');
+INSERT INTO vs_users (name, password, role, email)
+VALUES ('Anton', 'password', 'USER', 'anton@gmail.com'),
+       ('Victoria', 'password', 'USER', 'victoria@gmail.com'),
+       ('Alice', 'password', 'USER', 'alice@gmail.com'),
+       ('Vasya', 'password', 'USER', 'vasya@gmail.com'),
+       ('Rudolf', 'password', 'USER', 'rudolf@gmail.com'),
+       ('Nikita', 'password', 'USER', 'mikita@gmail.com'),
+       ('Arnold', 'password', 'USER', 'arnold@gmail.com'),
+       ('Donald', 'password', 'USER', 'donald@gmail.com'),
+       ('Galechka', 'password', 'USER', 'galechka@gmail.com'),
+       ('Viktor', 'admin', 'ADMIN', 'viktor@gmail.com'),
+       ('Igor', 'admin', 'ADMIN', 'igor@gmail.com');
 
 INSERT INTO vs_votes (rest_id, user_id, vote_date, vote_time)
 VALUES (3, 1, '2021-08-28', '16:00:00'),
@@ -48,7 +49,7 @@ VALUES (3, 1, '2021-08-28', '16:00:00'),
 INSERT INTO vs_votes (rest_id, user_id, vote_date)
 VALUES (3, 4, '2021-08-28'),
        (4, 5, '2021-09-13'),
-       (4, 5, '2021-09-13'),
+       (4, 7, '2021-09-13'),
        (4, 1, '2021-09-13'),
        (4, 2, '2021-09-13');
 
@@ -56,5 +57,3 @@ INSERT INTO vs_votes (rest_id, user_id, vote_time)
 VALUES (3, 9, '17:00:00'),
        (4, 8, '17:39:00');
 
-
--- с индексами разобраться

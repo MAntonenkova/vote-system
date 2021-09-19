@@ -10,16 +10,16 @@ public class Vote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name = "vote_id")
+    @Column(name = "vote_id", nullable = false, unique = true)
     private Integer voteId;
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id")
     private Restaurant restaurant;
-    @Column (name = "user_id")
-    private String userId;
-    @Column (name = "vote_date")
+    @Column(name = "user_id")
+    private Integer userId;
+    @Column(name = "vote_date", nullable = false)
     private LocalDate voteDate;
-    @Column (name = "vote_time")
+    @Column(name = "vote_time", nullable = false)
     private LocalTime voteTime;
 
     public Integer getVoteId() {
@@ -38,11 +38,11 @@ public class Vote {
         this.restaurant = restaurant;
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

@@ -10,9 +10,15 @@ import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,21 +35,6 @@ public class RestaurantService {
 
     @Autowired
     DishRepository dishRepository;
-
-    //delete
-    @Transactional
-    public RestaurantResponse getRestaurantInfo(RestaurantRequest request) {
-        List<Dish> dishes = repository.findDishes(request.getRestaurantName());
-
-        if (dishes.isEmpty()) {
-            return new RestaurantResponse();
-        }
-
-        RestaurantResponse response = new RestaurantResponse();
-        response.setSuccess(true);
-        response.setDishes(dishes);
-        return response;
-    }
 
     // find all restaurants
     @Transactional(readOnly = true)
@@ -88,34 +79,29 @@ public class RestaurantService {
 
     //update restaurant's name or add new restaurant
     @Transactional
-    public RestaurantsResponse updateRestaurant(Integer id, String name) {
+    public Result updateRestaurant(Integer id, String name) {
         if (id != null) {
             LOGGER.info("Edit restaurant with name = {}", id);
             repository.updateName(id, name);
         } else {
+
             LOGGER.info("Add new restaurant with name = {}", name);
             Restaurant restaurant = new Restaurant();
             restaurant.setRestaurantName(name);
-            restaurant = repository.save(restaurant);
-            id = (restaurant).getRestaurantId();
+            try{
+                repository.save(restaurant);
+            }catch (Exception e){
+                LOGGER.error(e.getMessage());
+            }
         }
-
-        return getRestaurant(id);
+        return Result.SUCCESS;
     }
 
     //delete restaurant by id
     @Transactional
     public Result deleteRestaurant(int id) {
-        if (repository.findById(id).isEmpty()) {
-            return Result.NO_SUCH_ENTRY_EXIST;
-        }
         LOGGER.info("Delete restaurant with id = {}", id);
-        repository.deleteById(id);
-        Optional<Restaurant> object = repository.findById(id);
-        if (object.isEmpty()) {
-            return Result.SUCCESS;
-        }
-        return Result.FAIL;
+        return repository.delete(id) !=0? Result.SUCCESS : Result.NO_SUCH_ENTRY_EXIST;
     }
 
     // add new dish
@@ -137,19 +123,18 @@ public class RestaurantService {
 
     // edit dish
     @Transactional
-    public Result editDish(Integer restId, Integer dishId, DishRequest request){
+    public Result editDish(Integer restId, Integer dishId, DishRequest request) {
         LOGGER.info("Edit dish with id = {} and rest_id = {}", dishId, restId);
         Dish dish = dishRepository.getOne(dishId);
-        if (dish == null){
-           return Result.FAIL;
+        if (dish == null) {
+            return Result.FAIL;
         }
         dishRepository.updateDish(request.getDishName(), request.getDishPrice(), dishId);
         return Result.SUCCESS;
     }
 
-    //delete dish
     @Transactional
-    public Result deleteDish(Integer dishId){
+    public Result deleteDish(Integer dishId) {
         if (dishRepository.findById(dishId).isEmpty()) {
             return Result.NO_SUCH_ENTRY_EXIST;
         }
@@ -157,28 +142,16 @@ public class RestaurantService {
         return Result.SUCCESS;
     }
 
-    // ------------
-    @Transactional
-    public List<Restaurant> findRestaurants() {
-        return repository.findAll();
-    }
-
-    @Transactional(readOnly = true)
-    public List<Dish> findDishes() {
-        return dishRepository.findAll();
-    }
-
     @Transactional(readOnly = true)
     public Dish getDish(Integer dishId) {
         Optional<Dish> fop = dishRepository.findById(dishId);
+        if (fop.isEmpty()){
+            return null;
+        }
         Dish dish = fop.get();
         Hibernate.initialize(dish.getRestaurant());
         return dish;
     }
 
-    @Transactional(readOnly = true)
-    public List<Restaurant> findFullRestaurants() {
-        List<Restaurant> fillRestaurantList = repository.findFullRestaurantList();
-        return fillRestaurantList;
-    }
+
 }

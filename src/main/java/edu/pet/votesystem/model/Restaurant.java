@@ -1,6 +1,10 @@
 package edu.pet.votesystem.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Table(name = "vs_restaurants")
@@ -9,9 +13,11 @@ public class Restaurant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "rest_id")
+    @Column(name = "rest_id", nullable = false, unique = true)
     private Integer restaurantId;
-    @Column(name = "rest_name")
+    @NotEmpty(message = "restaurant name should not be empty")
+    @Size(min = 2, max = 100, message = "restaurant name should be between 2 and 100 characters")
+    @Column(name = "rest_name", nullable = false)
     private String restaurantName;
     @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY,
             mappedBy = "restaurant")

@@ -1,11 +1,10 @@
 package edu.pet.votesystem.service;
 
+import edu.pet.votesystem.util.Result;
 import edu.pet.votesystem.view.VotesResponse;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -28,5 +27,10 @@ public class VoteServiceTest {
         int counts = votes.get(1).getVotesCountToday();
         Assert.assertEquals("Odessa mama", restaurantName);
         Assert.assertEquals(5, counts);
+    }
+
+    @Test
+    public void vote(){
+        Assert.assertEquals(Result.SUCCESS, service.vote(2, 3));
     }
 }
