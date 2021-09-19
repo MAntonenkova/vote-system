@@ -2,23 +2,19 @@ package edu.pet.votesystem.service;
 
 import edu.pet.votesystem.model.Dish;
 import edu.pet.votesystem.model.Restaurant;
-import edu.pet.votesystem.util.Result;
 import edu.pet.votesystem.repository.DishRepository;
 import edu.pet.votesystem.repository.RestaurantRepository;
-import edu.pet.votesystem.view.*;
+import edu.pet.votesystem.util.Result;
+import edu.pet.votesystem.view.DishRequest;
+import edu.pet.votesystem.view.DishResponse;
+import edu.pet.votesystem.view.RestaurantsResponse;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +32,6 @@ public class RestaurantService {
     @Autowired
     DishRepository dishRepository;
 
-    // find all restaurants
     @Transactional(readOnly = true)
     public List<RestaurantsResponse> getAllRestaurants() {
         LOGGER.info("Get all restaurants with it's menu");
@@ -56,7 +51,6 @@ public class RestaurantService {
         return responseList;
     }
 
-    //find restaurant by id
     @Transactional(readOnly = true)
     public RestaurantsResponse getRestaurant(Integer id) {
         RestaurantsResponse response = new RestaurantsResponse();
@@ -77,7 +71,6 @@ public class RestaurantService {
         return response;
     }
 
-    //update restaurant's name or add new restaurant
     @Transactional
     public Result updateRestaurant(Integer id, String name) {
         if (id != null) {
@@ -97,14 +90,12 @@ public class RestaurantService {
         return Result.SUCCESS;
     }
 
-    //delete restaurant by id
     @Transactional
     public Result deleteRestaurant(int id) {
         LOGGER.info("Delete restaurant with id = {}", id);
         return repository.delete(id) !=0? Result.SUCCESS : Result.NO_SUCH_ENTRY_EXIST;
     }
 
-    // add new dish
     @Transactional
     public Result addDish(Integer restId, DishRequest request) {
         LOGGER.info("Add dish with name = {} and price = {} to restaurant with id = {}", request.getDishName(), request.getDishPrice(), restId);
@@ -121,7 +112,6 @@ public class RestaurantService {
         return Result.FAIL;
     }
 
-    // edit dish
     @Transactional
     public Result editDish(Integer restId, Integer dishId, DishRequest request) {
         LOGGER.info("Edit dish with id = {} and rest_id = {}", dishId, restId);
@@ -152,6 +142,4 @@ public class RestaurantService {
         Hibernate.initialize(dish.getRestaurant());
         return dish;
     }
-
-
 }

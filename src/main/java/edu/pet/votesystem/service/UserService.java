@@ -6,6 +6,8 @@ import edu.pet.votesystem.util.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +24,14 @@ public class UserService {
     private UserRepository repository;
 
     @Transactional(readOnly = true)
+    @Cacheable("vs_users")
     public List<User> getAll() {
         LOGGER.info("Get all users");
         return repository.findAll();
     }
 
     @Transactional(readOnly = true)
+    @Cacheable("vs_users")
     public User get(Integer id) {
         LOGGER.info("Get user by id = {}", id);
         Optional<User> optionalUser = repository.findById(id);
@@ -39,6 +43,7 @@ public class UserService {
     }
 
     @Transactional
+    @CacheEvict(value = "vs_users", allEntries = true)
     public Result update(User user, Integer id) {
         LOGGER.info("Update user with id = {}", id);
         if (id != null){
@@ -55,6 +60,7 @@ public class UserService {
     }
 
     @Transactional
+    @CacheEvict(value = "vs_users", allEntries = true)
     public Result delete(Integer id) {
         LOGGER.info("Delete user by id = {}", id);
         return repository.delete(id) != 0 ? Result.SUCCESS : Result.NO_SUCH_ENTRY_EXIST;

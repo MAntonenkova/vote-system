@@ -113,7 +113,6 @@ public class VoteService {
         return votesResponse;
     }
 
-
     private Restaurant restaurantFromDB(Integer restId) {
         Optional<Restaurant> restById = restaurantRepository.findById(restId);
         return restById.orElse(null);
@@ -124,5 +123,4 @@ public class VoteService {
         User user = userById.orElse(null);
         return user != null;
     }
-
 }

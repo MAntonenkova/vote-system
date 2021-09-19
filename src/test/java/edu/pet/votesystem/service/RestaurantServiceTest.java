@@ -1,7 +1,5 @@
 package edu.pet.votesystem.service;
 
-import edu.pet.votesystem.model.Restaurant;
-import edu.pet.votesystem.rest.RestaurantController;
 import edu.pet.votesystem.view.DishRequest;
 import edu.pet.votesystem.view.RestaurantsResponse;
 import org.junit.Assert;
@@ -33,14 +31,14 @@ public class RestaurantServiceTest {
     }
 
     @Test
-    public void addRestaurant() throws Exception {
+    public void addRestaurant() {
         int restCount = service.getAllRestaurants().size();
         service.updateRestaurant(null,"New restaurant");
         Assert.assertEquals(++restCount, service.getAllRestaurants().size());
     }
 
     @Test
-    public void editRestaurant() throws Exception{
+    public void editRestaurant() {
         String newName = "Mushrooms";
         service.updateRestaurant(1, newName);
         Assert.assertEquals(newName, service.getRestaurant(1).getRestName());
