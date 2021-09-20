@@ -15,13 +15,14 @@
 
         <spring.version>5.3.9</spring.version>
         <spring-data.version>2.2.1.RELEASE</spring-data.version>
+        <spring.security.version>5.4.1</spring.security.version>
+
         <hibernate.version>5.4.22.Final</hibernate.version>
         <hibernate-validator.version>6.1.6.Final</hibernate-validator.version>
+
         <ehcache.version>3.9.0</ehcache.version>
         <jackson.version>2.12.3</jackson.version>
         <slf4j.version>1.7.28</slf4j.version>
-
-        <jersey.version>2.34</jersey.version>
 
     </properties>
 
@@ -86,6 +87,25 @@
             <artifactId>spring-data-jpa</artifactId>
             <version>${spring-data.version}</version>
         </dependency>
+
+        <!--security-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+
+        <!-- Cache -->
         <dependency>
             <groupId>javax.cache</groupId>
             <artifactId>cache-api</artifactId>
@@ -97,6 +117,8 @@
             <scope>runtime</scope>
             <version>${ehcache.version}</version>
         </dependency>
+
+        <!--JSON-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>

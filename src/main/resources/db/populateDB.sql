@@ -26,17 +26,17 @@ VALUES ('Pumpkin cream soup', 450, 1),
        ('Сapuccino', 150, 9);
 
 INSERT INTO vs_users (name, password, role, email)
-VALUES ('Anton', 'password', 'USER', 'anton@gmail.com'),
-       ('Victoria', 'password', 'USER', 'victoria@gmail.com'),
-       ('Alice', 'password', 'USER', 'alice@gmail.com'),
-       ('Vasya', 'password', 'USER', 'vasya@gmail.com'),
-       ('Rudolf', 'password', 'USER', 'rudolf@gmail.com'),
-       ('Nikita', 'password', 'USER', 'mikita@gmail.com'),
-       ('Arnold', 'password', 'USER', 'arnold@gmail.com'),
-       ('Donald', 'password', 'USER', 'donald@gmail.com'),
-       ('Galechka', 'password', 'USER', 'galechka@gmail.com'),
-       ('Viktor', 'admin', 'ADMIN', 'viktor@gmail.com'),
-       ('Igor', 'admin', 'ADMIN', 'igor@gmail.com');
+VALUES ('Anton', '{noop}password', 'USER', 'anton@gmail.com'),
+       ('Victoria', '{noop}password', 'USER', 'victoria@gmail.com'),
+       ('Alice', '{noop}password', 'USER', 'alice@gmail.com'),
+       ('Vasya', '{noop}password', 'USER', 'vasya@gmail.com'),
+       ('Rudolf', '{noop}password', 'USER', 'rudolf@gmail.com'),
+       ('Nikita', '{noop}password', 'USER', 'mikita@gmail.com'),
+       ('Arnold', '{noop}password', 'USER', 'arnold@gmail.com'),
+       ('Donald', '{noop}password', 'USER', 'donald@gmail.com'),
+       ('Galechka', '{noop}password', 'USER', 'galechka@gmail.com'),
+       ('Fedor', '{noop}admin', 'ADMIN', 'viktor@gmail.com'),
+       ('Igor', '{noop}admin', 'ADMIN', 'igor@gmail.com');
 
 INSERT INTO vs_votes (rest_id, user_id, vote_date, vote_time)
 VALUES (3, 1, '2021-08-28', '16:00:00'),
