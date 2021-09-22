@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolationException;
@@ -27,14 +28,16 @@ public class RestaurantController {
 
     //localhost:8080/votesystem/restaurants
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @PreAuthorize("hasAuthority('read')")
+  //  @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public List<RestaurantsResponse> getAllRestaurants() {
         return service.getAllRestaurants();
     }
 
     //localhost:8080/votesystem/restaurants/3
     @GetMapping(path = "/{restaurantId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @PreAuthorize("hasAuthority('read')")
+   // @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public RestaurantsResponse getRestaurant(@PathVariable Integer restaurantId) {
         return service.getRestaurant(restaurantId);
     }

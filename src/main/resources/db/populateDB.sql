@@ -36,6 +36,7 @@ VALUES ('Anton', '{noop}password', 'USER', 'anton@gmail.com'),
        ('Donald', '{noop}password', 'USER', 'donald@gmail.com'),
        ('Galechka', '{noop}password', 'USER', 'galechka@gmail.com'),
        ('Fedor', '{noop}admin', 'ADMIN', 'viktor@gmail.com'),
+       ('Admin', '{noop}admin', 'ADMIN', 'admin@gmail.com'),
        ('Igor', '{noop}admin', 'ADMIN', 'igor@gmail.com');
 
 INSERT INTO vs_votes (rest_id, user_id, vote_date, vote_time)

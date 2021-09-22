@@ -7,6 +7,7 @@ import edu.pet.votesystem.view.VotesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -20,7 +21,8 @@ public class VoteController {
 
     //http://localhost:8080/votesystem/votes
     @GetMapping(path = "/votes", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Secured("ROLE_ADMIN")
+   // @Secured("ROLE_ADMIN")
+    @PreAuthorize("hasAuthority('write')")
     public List<VotesResponse> getVotingResult() {
         LocalDate today = LocalDate.now();
         return service.getVotes(today);
@@ -31,7 +33,8 @@ public class VoteController {
         "voteDate" : "13.09.2021"
     }*/
     @PostMapping(path = "/votes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Secured("ROLE_ADMIN")
+   // @Secured("ROLE_ADMIN")
+    @PreAuthorize("hasAuthority('write')")
     public List<VotesResponse> getVotingResult(@RequestBody DateRequest request) {
         return service.getVotes(request.getVoteDate());
     }
