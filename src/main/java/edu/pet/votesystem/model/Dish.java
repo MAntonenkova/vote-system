@@ -22,7 +22,7 @@ public class Dish {
     @Size(min = 2, max = 100)
     @Column(name = "dish_name", nullable = false)
     private String dishName;
-    @NotEmpty
+    @NotNull
     @Column(name = "dish_price", nullable = false)
     @Positive
     @Min(value = 0, message = "dish price should be greater than zero")

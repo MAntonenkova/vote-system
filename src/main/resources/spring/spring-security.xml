@@ -8,18 +8,21 @@
         http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <global-method-security secured-annotations="enabled" />
+
     <http auto-config="true">
-        <intercept-url pattern="/votesystem/users" access="hasRole('ROLE_ADMIN')"/>
-        <intercept-url pattern="/votesystem/votes" access="hasRole('ROLE_ADMIN')"/>
-        <intercept-url pattern="/votesystem/restaurants" access="hasRole('ROLE_USER')"/>
-        <intercept-url pattern="/votesystem/vote" access="hasRole('ROLE_USER')"/>
+        <csrf disabled="true"/>
     </http>
     <authentication-manager>
+        <!--        <authentication-provider user-service-ref="userService"/>-->
+
         <authentication-provider>
             <user-service>
                 <user name="Viktor" password="{noop}admin" authorities="ROLE_ADMIN"/>
                 <user name="Igor" password="{noop}admin" authorities="ROLE_ADMIN"/>
+                <user name="Admin" password="{noop}admin" authorities="ROLE_ADMIN"/>
                 <user name="Vasya" password="{noop}password" authorities="ROLE_USER"/>
+                <user name="User" password="{noop}password" authorities="ROLE_USER"/>
             </user-service>
         </authentication-provider>
     </authentication-manager>

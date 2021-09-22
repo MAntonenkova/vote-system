@@ -81,9 +81,9 @@ public class RestaurantService {
             LOGGER.info("Add new restaurant with name = {}", name);
             Restaurant restaurant = new Restaurant();
             restaurant.setRestaurantName(name);
-            try{
+            try {
                 repository.save(restaurant);
-            }catch (Exception e){
+            } catch (Exception e) {
                 LOGGER.error(e.getMessage());
             }
         }
@@ -93,7 +93,7 @@ public class RestaurantService {
     @Transactional
     public Result deleteRestaurant(int id) {
         LOGGER.info("Delete restaurant with id = {}", id);
-        return repository.delete(id) !=0? Result.SUCCESS : Result.NO_SUCH_ENTRY_EXIST;
+        return repository.delete(id) != 0 ? Result.SUCCESS : Result.NO_SUCH_ENTRY_EXIST;
     }
 
     @Transactional
@@ -102,7 +102,17 @@ public class RestaurantService {
         Dish dish = new Dish();
         dish.setDishName(request.getDishName());
         dish.setPrice(request.getDishPrice());
-        Restaurant restaurant = repository.getOne(restId);
+        Optional<Restaurant> fob = repository.findById(restId);
+        if (fob.isEmpty()) {
+            LOGGER.error("Restaurant with id = {} doesn't exist", restId);
+            return Result.FAIL;
+        }
+        Restaurant restFromDb = fob.get();
+
+        Restaurant restaurant = new Restaurant();
+        restaurant.setRestaurantId(restFromDb.getRestaurantId());
+        restaurant.setRestaurantName(restFromDb.getRestaurantName());
+
         dish.setRestaurant(restaurant);
 
         Integer dishId = (dishRepository.save(dish)).getDishId();
@@ -135,7 +145,7 @@ public class RestaurantService {
     @Transactional(readOnly = true)
     public Dish getDish(Integer dishId) {
         Optional<Dish> fop = dishRepository.findById(dishId);
-        if (fop.isEmpty()){
+        if (fop.isEmpty()) {
             return null;
         }
         Dish dish = fop.get();
