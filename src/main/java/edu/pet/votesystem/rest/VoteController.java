@@ -6,7 +6,6 @@ import edu.pet.votesystem.view.DateRequest;
 import edu.pet.votesystem.view.VotesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +40,7 @@ public class VoteController {
 
     //http://localhost:8080/votesystem/vote?restId=1&userId=4
     @PostMapping(path = "/vote", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Secured("ROLE_USER")
+    @PreAuthorize("hasAuthority('read')")
     public Result vote(@RequestParam("restId") Integer restId, @RequestParam ("userId") Integer userId){
         return service.vote(restId, userId);
     }

@@ -1,14 +1,18 @@
 package edu.pet.votesystem.service;
 
+import edu.pet.votesystem.model.Role;
 import edu.pet.votesystem.model.User;
 import edu.pet.votesystem.repository.UserRepository;
 import edu.pet.votesystem.util.Result;
+import edu.pet.votesystem.util.UserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +26,9 @@ public class UserService {
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired()
+    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
     @Transactional(readOnly = true)
     @Cacheable("vs_users")
@@ -46,16 +53,30 @@ public class UserService {
     @CacheEvict(value = "vs_users", allEntries = true)
     public Result update(User user, Integer id) {
         LOGGER.info("Update user with id = {}", id);
-        if (id != null){
-            repository.update(id, user.getName(), user.getPassword(), user.getEmail(), user.getRole(), user.isEnable());
+
+        User authUser = getAuthUser();
+        Role authUserRole = authUser.getRole();
+
+        if (id == null && authUserRole.equals(Role.ADMIN)) {
+            try {
+                String password = passwordEncoder.encode(user.getPassword());
+                user.setPassword(password);
+                repository.save(user);
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage());
+                return Result.FAIL;
+            }
             return Result.SUCCESS;
         }
-        try {
-            repository.save(user);
-        } catch (DataIntegrityViolationException e) {
-            LOGGER.error(e.getMessage());
+
+        boolean isUserChangeOwnData = userChangeOwnData(id, authUser);
+
+        Integer authUserId = authUser.getId();
+        if (!authUserRole.equals(Role.ADMIN) && !isUserChangeOwnData) {
+            LOGGER.error("Only admin could change another user's data. User id = {}", authUserId);
             return Result.FAIL;
         }
+        repository.update(id, user.getName(), passwordEncoder.encode(user.getPassword()), user.getEmail(), user.getRole(), user.isEnable());
         return Result.SUCCESS;
     }
 
@@ -63,6 +84,27 @@ public class UserService {
     @CacheEvict(value = "vs_users", allEntries = true)
     public Result delete(Integer id) {
         LOGGER.info("Delete user by id = {}", id);
+
+        User authUser = getAuthUser();
+        Role authUserRole = authUser.getRole();
+
+        boolean isUserChangeOwnData = userChangeOwnData(id, authUser);
+
+        Integer authUserId = authUser.getId();
+        if (!authUserRole.equals(Role.ADMIN) && !isUserChangeOwnData) {
+            LOGGER.error("Only admin could change another user's data. User id = {}", authUserId);
+            return Result.FAIL;
+        }
         return repository.delete(id) != 0 ? Result.SUCCESS : Result.NO_SUCH_ENTRY_EXIST;
+    }
+
+    private boolean userChangeOwnData(Integer id, User authUser) {
+        Integer authUserId = authUser.getId();
+        return authUserId.equals(id);
+    }
+
+    private User getAuthUser() {
+        String authenticationUserEmail = UserUtil.getAuthenticationUser();
+        return repository.findByEmail(authenticationUserEmail);
     }
 }

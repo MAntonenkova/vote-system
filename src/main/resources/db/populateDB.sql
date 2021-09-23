@@ -26,18 +26,18 @@ VALUES ('Pumpkin cream soup', 450, 1),
        ('Сapuccino', 150, 9);
 
 INSERT INTO vs_users (name, password, role, email)
-VALUES ('Anton', '{noop}password', 'USER', 'anton@gmail.com'),
-       ('Victoria', '{noop}password', 'USER', 'victoria@gmail.com'),
-       ('Alice', '{noop}password', 'USER', 'alice@gmail.com'),
-       ('Vasya', '{noop}password', 'USER', 'vasya@gmail.com'),
-       ('Rudolf', '{noop}password', 'USER', 'rudolf@gmail.com'),
-       ('Nikita', '{noop}password', 'USER', 'mikita@gmail.com'),
-       ('Arnold', '{noop}password', 'USER', 'arnold@gmail.com'),
-       ('Donald', '{noop}password', 'USER', 'donald@gmail.com'),
-       ('Galechka', '{noop}password', 'USER', 'galechka@gmail.com'),
-       ('Fedor', '{noop}admin', 'ADMIN', 'viktor@gmail.com'),
-       ('Admin', '{noop}admin', 'ADMIN', 'admin@gmail.com'),
-       ('Igor', '{noop}admin', 'ADMIN', 'igor@gmail.com');
+VALUES ('Anton', '{bcrypt}$2a$10$LYbBSCPTcvGscGGh7Sd5TOmIbsAcqaxu3bni1/Hi0DZ5QDGZqmBAq', 'USER', 'anton@gmail.com'),
+       ('Victoria', '{bcrypt}$2a$12$dcu8iRkoxOzJ1feFKB2Ln.kUtcDAbFkBjFU.RRBvhuSM.xCJWPQpK', 'USER', 'victoria@gmail.com'),
+       ('Alice', '{bcrypt}$2a$12$VJ3feD91GCq8bMlxiP1QBeUNVV3Jmidcuysk2a/u.3.1MtgbpYSOO', 'USER', 'alice@gmail.com'),
+       ('Vasya', '{bcrypt}$2a$12$RICzwZTgQcBWnrdcLJ0Iku1qvR2oJKrxZLZFnOwXexG8vrh/PKPGe', 'USER', 'vasya@gmail.com'),
+       ('Rudolf', '{bcrypt}$2a$12$uUXs1dSuppDsqfAGC0O4TOj4TuAuDzdKoO19BEqkA3O1jja/oZbbW', 'USER', 'rudolf@gmail.com'),
+       ('Nikita', '{bcrypt}$2a$12$TtvrNWhaSvg98jBlxOJQtO9cJcd8Fu1uuZU.nbOreLaokCn1la2sK', 'USER', 'nikita@gmail.com'),
+       ('Arnold', '{bcrypt}$2a$12$tZAaYnArJm87YO3AHf5d6uSoEelYG/R4Tttjy75CPuI/ooewOU3Vq', 'USER', 'arnold@gmail.com'),
+       ('Donald', '{bcrypt}$2a$12$cwOGjAkfPpg3yvhGgQH8NO6h0wWr.n0NMQuY5XmVTgbIeQffuP5l2', 'USER', 'donald@gmail.com'),
+       ('Galechka', '{bcrypt}$2a$12$8udv3UyKp5dbbVI8CR4sgOZjJ8cCOqCSLDxkOnXO35jj4r4rT.CeS', 'USER', 'galechka@gmail.com'),
+       ('Fedor', '{bcrypt}$2a$12$SHZ8oFv12Ywj3ylrj6346OYQ73XOHmV1rcmIQNZhLLL6lBWHE6njS', 'ADMIN', 'viktor@gmail.com'),
+       ('Admin', '{bcrypt}$2a$12$5LDE4S5YHYGoOnpbZH5qYeaiLfYegAr1.KTwgI6uDU8jYsU3BfwoO', 'ADMIN', 'admin@gmail.com'),
+       ('Igor', '{bcrypt}$2a$12$BAFRZEgOvsL.7D27IljcTOkmCTQOWXia.vzoBU8MQ3Ll0IMFiNu1e', 'ADMIN', 'igor@gmail.com');
 
 INSERT INTO vs_votes (rest_id, user_id, vote_date, vote_time)
 VALUES (3, 1, '2021-08-28', '16:00:00'),

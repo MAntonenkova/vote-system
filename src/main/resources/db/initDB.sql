@@ -51,7 +51,7 @@ CREATE TABLE vs_users
 (
     id       INTEGER DEFAULT nextval('user_seq'),
     name     VARCHAR(50)          NOT NULL,
-    password VARCHAR(20)          NOT NULL,
+    password VARCHAR(250)          NOT NULL,
     role     VARCHAR              NOT NULL,
     email    VARCHAR(50)          NOT NULL,
     enable   BOOLEAN DEFAULT TRUE NOT NULL,

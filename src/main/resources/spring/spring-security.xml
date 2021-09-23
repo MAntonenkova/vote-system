@@ -18,6 +18,8 @@
 
     <beans:bean class="org.springframework.security.crypto.factory.PasswordEncoderFactories" id="passwordEncoder" factory-method="createDelegatingPasswordEncoder"/>
 
+    <beans:bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
     <!--    <authentication-manager>
     &lt;!&ndash;                <authentication-provider user-service-ref="userDetailService"/>&ndash;&gt;
 
@@ -37,6 +39,7 @@
         <authentication-provider
                 user-service-ref="userDetailService" >
             <password-encoder ref="passwordEncoder"/>
+
         </authentication-provider>
     </authentication-manager>
 
