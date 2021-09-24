@@ -13,7 +13,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
-    private Integer id;
+    private Long id;
     @NotBlank
     @Size(min = 2, max = 30)
     @Column(name = "name", nullable = false)
@@ -32,12 +32,12 @@ public class User {
     @Column(name = "enable")
     boolean enable = true;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer userId) {
-        this.id = userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

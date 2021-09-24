@@ -26,7 +26,7 @@ VALUES ('Pumpkin cream soup', 450, 1),
        ('Сapuccino', 150, 9);
 
 INSERT INTO vs_users (name, password, role, email)
-VALUES ('Anton', '{bcrypt}$2a$10$LYbBSCPTcvGscGGh7Sd5TOmIbsAcqaxu3bni1/Hi0DZ5QDGZqmBAq', 'USER', 'anton@gmail.com'),
+VALUES ('User', '{bcrypt}$2a$10$LYbBSCPTcvGscGGh7Sd5TOmIbsAcqaxu3bni1/Hi0DZ5QDGZqmBAq', 'USER', 'user@gmail.com'),
        ('Victoria', '{bcrypt}$2a$12$dcu8iRkoxOzJ1feFKB2Ln.kUtcDAbFkBjFU.RRBvhuSM.xCJWPQpK', 'USER', 'victoria@gmail.com'),
        ('Alice', '{bcrypt}$2a$12$VJ3feD91GCq8bMlxiP1QBeUNVV3Jmidcuysk2a/u.3.1MtgbpYSOO', 'USER', 'alice@gmail.com'),
        ('Vasya', '{bcrypt}$2a$12$RICzwZTgQcBWnrdcLJ0Iku1qvR2oJKrxZLZFnOwXexG8vrh/PKPGe', 'USER', 'vasya@gmail.com'),
@@ -50,6 +50,7 @@ VALUES (3, 1, '2021-08-28', '16:00:00'),
 INSERT INTO vs_votes (rest_id, user_id, vote_date)
 VALUES (3, 4, '2021-08-28'),
        (4, 5, '2021-09-13'),
+       (7, 3, '2021-09-13'),
        (4, 7, '2021-09-13'),
        (4, 1, '2021-09-13'),
        (4, 2, '2021-09-13');

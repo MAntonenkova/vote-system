@@ -26,7 +26,7 @@ public class RestaurantServiceTest {
 
     @Test
     public void getRestaurant() {
-        RestaurantsResponse restaurant = service.getRestaurant(9);
+        RestaurantsResponse restaurant = service.getRestaurant(9L);
         Assert.assertEquals(3, restaurant.getDishes().size());
     }
 
@@ -41,7 +41,7 @@ public class RestaurantServiceTest {
     public void editRestaurant() {
         String newName = "Mushrooms";
         service.updateRestaurant(1, newName);
-        Assert.assertEquals(newName, service.getRestaurant(1).getRestName());
+        Assert.assertEquals(newName, service.getRestaurant(1L).getRestName());
     }
 
     @Test
@@ -49,8 +49,8 @@ public class RestaurantServiceTest {
         DishRequest dishRequest = new DishRequest();
         dishRequest.setDishName("Cream cheese and smoked salmon");
         dishRequest.setDishPrice(750);
-        service.addDish(8, dishRequest);
-        Assert.assertEquals(2, service.getRestaurant(8).getDishes().size());
+        service.addDish(8L, dishRequest);
+        Assert.assertEquals(2, service.getRestaurant(8L).getDishes().size());
     }
 
     @Test
@@ -58,7 +58,7 @@ public class RestaurantServiceTest {
         DishRequest dishRequest = new DishRequest();
         dishRequest.setDishName("Bonbons");
         dishRequest.setDishPrice(300);
-        service.editDish(9, 12, dishRequest);
-        Assert.assertEquals("Bonbons", service.getDish(12).getDishName());
+        service.editDish(9L, 12L, dishRequest);
+        Assert.assertEquals("Bonbons", service.getDish(12L).getDishName());
     }
 }

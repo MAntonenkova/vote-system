@@ -52,7 +52,7 @@ public class RestaurantService {
     }
 
     @Transactional(readOnly = true)
-    public RestaurantsResponse getRestaurant(Integer id) {
+    public RestaurantsResponse getRestaurant(Long id) {
         RestaurantsResponse response = new RestaurantsResponse();
         LOGGER.info("Get restaurant with id = {}", id);
         Optional<Restaurant> fob = repository.findById(id);
@@ -97,7 +97,7 @@ public class RestaurantService {
     }
 
     @Transactional
-    public Result addDish(Integer restId, DishRequest request) {
+    public Result addDish(Long restId, DishRequest request) {
         LOGGER.info("Add dish with name = {} and price = {} to restaurant with id = {}", request.getDishName(), request.getDishPrice(), restId);
         Dish dish = new Dish();
         dish.setDishName(request.getDishName());
@@ -115,7 +115,7 @@ public class RestaurantService {
 
         dish.setRestaurant(restaurant);
 
-        Integer dishId = (dishRepository.save(dish)).getDishId();
+        Long dishId = (dishRepository.save(dish)).getDishId();
         if (dishId > 0) {
             return Result.SUCCESS;
         }
@@ -123,7 +123,7 @@ public class RestaurantService {
     }
 
     @Transactional
-    public Result editDish(Integer restId, Integer dishId, DishRequest request) {
+    public Result editDish(Long restId, Long dishId, DishRequest request) {
         LOGGER.info("Edit dish with id = {} and rest_id = {}", dishId, restId);
         Dish dish = dishRepository.getOne(dishId);
         if (dish == null) {
@@ -134,7 +134,7 @@ public class RestaurantService {
     }
 
     @Transactional
-    public Result deleteDish(Integer dishId) {
+    public Result deleteDish(Long dishId) {
         if (dishRepository.findById(dishId).isEmpty()) {
             return Result.NO_SUCH_ENTRY_EXIST;
         }
@@ -143,7 +143,7 @@ public class RestaurantService {
     }
 
     @Transactional(readOnly = true)
-    public Dish getDish(Integer dishId) {
+    public Dish getDish(Long dishId) {
         Optional<Dish> fop = dishRepository.findById(dishId);
         if (fop.isEmpty()) {
             return null;

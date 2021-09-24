@@ -8,9 +8,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DishRepository extends JpaRepository<Dish, Integer> {
+public interface DishRepository extends JpaRepository<Dish, Long> {
 
     @Modifying
     @Query("UPDATE Dish dish SET dish.dishName =:dishName, dish.price =:dishPrice WHERE dish.dishId =:dishId")
-    void updateDish(@Param("dishName") String dishName, @Param("dishPrice")Integer dishPrice, @Param("dishId") Integer dishId);
+    void updateDish(@Param("dishName") String dishName, @Param("dishPrice")Integer dishPrice, @Param("dishId") Long dishId);
 }

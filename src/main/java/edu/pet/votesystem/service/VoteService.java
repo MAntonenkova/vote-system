@@ -7,6 +7,7 @@ import edu.pet.votesystem.repository.RestaurantRepository;
 import edu.pet.votesystem.repository.UserRepository;
 import edu.pet.votesystem.repository.VoteRepository;
 import edu.pet.votesystem.util.Result;
+import edu.pet.votesystem.util.UserUtil;
 import edu.pet.votesystem.view.VotesResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +40,8 @@ public class VoteService {
         List<VotesResponse> responses = new ArrayList<>();
         List<Vote> votesForToday = voteRepository.getVotesForToday(localDate);
 
-        Map<Integer, Integer> voteCounts = countVotes(votesForToday);
-        for (Map.Entry<Integer, Integer> entry : voteCounts.entrySet()) {
+        Map<Long, Long> voteCounts = countVotes(votesForToday);
+        for (Map.Entry<Long, Long> entry : voteCounts.entrySet()) {
             VotesResponse voteResponse = getVoteResponse(entry);
             responses.add(voteResponse);
         }
@@ -48,10 +49,12 @@ public class VoteService {
     }
 
     @Transactional
-    public Result vote(Integer restId, Integer userId) {
+    public Result vote(Long restId) {
         LocalDateTime localDateTime = LocalDateTime.now();
         LocalDate localDate = localDateTime.toLocalDate();
         LocalTime localTime = localDateTime.toLocalTime();
+
+        Long userId = getAuthUser().getId();
 
         if (!userExist(userId)) {
             LOGGER.info("User with id = {} does not exist", userId);
@@ -87,20 +90,20 @@ public class VoteService {
         return Result.SUCCESS;
     }
 
-    private Map<Integer, Integer> countVotes(List<Vote> votesForToday) {
-        Map<Integer, Integer> voteCounts = new HashMap<>();
+    private Map<Long, Long> countVotes(List<Vote> votesForToday) {
+        Map<Long, Long> voteCounts = new HashMap<>();
         for (Vote vote : votesForToday) {
-            Integer restaurantId = vote.getRestaurant().getRestaurantId();
+            Long restaurantId = vote.getRestaurant().getRestaurantId();
             if (voteCounts.containsKey(restaurantId)) {
                 voteCounts.computeIfPresent(restaurantId, (key, val) -> val + 1);
             } else {
-                voteCounts.put(restaurantId, 1);
+                voteCounts.put(restaurantId, 1L);
             }
         }
         return voteCounts;
     }
 
-    private VotesResponse getVoteResponse(Map.Entry<Integer, Integer> entry) {
+    private VotesResponse getVoteResponse(Map.Entry<Long, Long> entry) {
         VotesResponse votesResponse = new VotesResponse();
         Optional<Restaurant> optional = restaurantRepository.findById(entry.getKey());
         if(optional.isEmpty()){
@@ -113,14 +116,19 @@ public class VoteService {
         return votesResponse;
     }
 
-    private Restaurant restaurantFromDB(Integer restId) {
+    private Restaurant restaurantFromDB(Long restId) {
         Optional<Restaurant> restById = restaurantRepository.findById(restId);
         return restById.orElse(null);
     }
 
-    private boolean userExist(Integer userId) {
+    private boolean userExist(Long userId) {
         Optional<User> userById = userRepository.findById(userId);
         User user = userById.orElse(null);
         return user != null;
+    }
+
+    private User getAuthUser() {
+        String authenticationUserEmail = UserUtil.getAuthenticationUser();
+        return userRepository.findByEmail(authenticationUserEmail);
     }
 }

@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,7 +38,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     @Cacheable("vs_users")
-    public User get(Integer id) {
+    public User get(Long id) {
         LOGGER.info("Get user by id = {}", id);
         Optional<User> optionalUser = repository.findById(id);
         if (optionalUser.isEmpty()) {
@@ -51,7 +50,7 @@ public class UserService {
 
     @Transactional
     @CacheEvict(value = "vs_users", allEntries = true)
-    public Result update(User user, Integer id) {
+    public Result update(User user, Long id) {
         LOGGER.info("Update user with id = {}", id);
 
         User authUser = getAuthUser();
@@ -71,7 +70,7 @@ public class UserService {
 
         boolean isUserChangeOwnData = userChangeOwnData(id, authUser);
 
-        Integer authUserId = authUser.getId();
+        Long authUserId = authUser.getId();
         if (!authUserRole.equals(Role.ADMIN) && !isUserChangeOwnData) {
             LOGGER.error("Only admin could change another user's data. User id = {}", authUserId);
             return Result.FAIL;
@@ -82,7 +81,7 @@ public class UserService {
 
     @Transactional
     @CacheEvict(value = "vs_users", allEntries = true)
-    public Result delete(Integer id) {
+    public Result delete(Long id) {
         LOGGER.info("Delete user by id = {}", id);
 
         User authUser = getAuthUser();
@@ -90,7 +89,7 @@ public class UserService {
 
         boolean isUserChangeOwnData = userChangeOwnData(id, authUser);
 
-        Integer authUserId = authUser.getId();
+        Long authUserId = authUser.getId();
         if (!authUserRole.equals(Role.ADMIN) && !isUserChangeOwnData) {
             LOGGER.error("Only admin could change another user's data. User id = {}", authUserId);
             return Result.FAIL;
@@ -98,8 +97,8 @@ public class UserService {
         return repository.delete(id) != 0 ? Result.SUCCESS : Result.NO_SUCH_ENTRY_EXIST;
     }
 
-    private boolean userChangeOwnData(Integer id, User authUser) {
-        Integer authUserId = authUser.getId();
+    private boolean userChangeOwnData(Long id, User authUser) {
+        Long authUserId = authUser.getId();
         return authUserId.equals(id);
     }
 

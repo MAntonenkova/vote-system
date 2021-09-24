@@ -18,30 +18,22 @@ public class VoteController {
     @Autowired
     VoteService service;
 
-    //http://localhost:8080/votesystem/votes
     @GetMapping(path = "/votes", produces = MediaType.APPLICATION_JSON_VALUE)
-   // @Secured("ROLE_ADMIN")
     @PreAuthorize("hasAuthority('write')")
     public List<VotesResponse> getVotingResult() {
         LocalDate today = LocalDate.now();
         return service.getVotes(today);
     }
 
-    //http://localhost:8080/votesystem/votes
-/*    {
-        "voteDate" : "13.09.2021"
-    }*/
     @PostMapping(path = "/votes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-   // @Secured("ROLE_ADMIN")
     @PreAuthorize("hasAuthority('write')")
     public List<VotesResponse> getVotingResult(@RequestBody DateRequest request) {
         return service.getVotes(request.getVoteDate());
     }
 
-    //http://localhost:8080/votesystem/vote?restId=1&userId=4
-    @PostMapping(path = "/vote", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('read')")
-    public Result vote(@RequestParam("restId") Integer restId, @RequestParam ("userId") Integer userId){
-        return service.vote(restId, userId);
+    @GetMapping(path = "/vote", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('vote')")
+    public Result vote(@RequestParam("restId") Long restId){
+        return service.vote(restId);
     }
 }

@@ -13,7 +13,7 @@ public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "dish_id", nullable = false, unique = true)
-    private Integer dishId;
+    private Long dishId;
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -28,11 +28,11 @@ public class Dish {
     @Min(value = 0, message = "dish price should be greater than zero")
     private Integer price;
 
-    public Integer getDishId() {
+    public Long getDishId() {
         return dishId;
     }
 
-    public void setDishId(Integer dishId) {
+    public void setDishId(Long dishId) {
         this.dishId = dishId;
     }
 

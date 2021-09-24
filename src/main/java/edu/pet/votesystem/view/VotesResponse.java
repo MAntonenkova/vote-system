@@ -3,7 +3,7 @@ package edu.pet.votesystem.view;
 public class VotesResponse {
 
     private String restaurantName;
-    private Integer votesCountToday;
+    private Long votesCountToday;
 
     public String getRestaurantName() {
         return restaurantName;
@@ -13,11 +13,11 @@ public class VotesResponse {
         this.restaurantName = restaurantName;
     }
 
-    public Integer getVotesCountToday() {
+    public Long getVotesCountToday() {
         return votesCountToday;
     }
 
-    public void setVotesCountToday(Integer votesCountToday) {
+    public void setVotesCountToday(Long votesCountToday) {
         this.votesCountToday = votesCountToday;
     }
 }

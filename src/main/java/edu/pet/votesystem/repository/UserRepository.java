@@ -9,16 +9,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     @Modifying
     @Query("DELETE FROM User user WHERE user.id =:id")
-    int delete(@Param("id") Integer id);
+    int delete(@Param("id") Long id);
 
     @Modifying
     @Query("UPDATE User user SET user.name =:name, user.password =:password, user.email =:email, user.role =:role, user.enable =:enable" +
             " WHERE user.id =:id")
-    void update(@Param("id") Integer id,
+    void update(@Param("id") Long id,
                 @Param("name") String name,
                 @Param("password") String password,
                 @Param("email") String email,

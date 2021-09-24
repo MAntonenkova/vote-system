@@ -18,10 +18,10 @@ public interface VoteRepository extends JpaRepository<Vote, Integer> {
     List<Vote> getVotesForToday(@Param("localDate")LocalDate localDate);
 
     @Query ("SELECT vote FROM Vote vote WHERE vote.userId =:userId AND vote.voteDate =:localDate")
-    Vote getVote(@Param ("userId") Integer userId, @Param("localDate") LocalDate localDate);
+    Vote getVote(@Param ("userId") Long userId, @Param("localDate") LocalDate localDate);
 
     @Modifying
     @Query ("UPDATE Vote vote SET vote.restaurant.restaurantId =:restId, vote.voteTime =:localTime WHERE vote.voteId =:voteId")
-    void update(@Param ("voteId") Integer voteId, @Param("localTime")LocalTime localTime, @Param("restId") Integer restId);
+    void update(@Param ("voteId") Integer voteId, @Param("localTime")LocalTime localTime, @Param("restId") Long restId);
 
 }
