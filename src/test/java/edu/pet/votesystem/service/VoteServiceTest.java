@@ -21,12 +21,19 @@ public class VoteServiceTest {
 
     @Test
     public void getVotes(){
-        LocalDate localDate = LocalDate.of(2021, 9,13);
         List<VotesResponse> votes = service.getVotes(LocalDate.now());
         String restaurantName = votes.get(1).getRestaurantName();
         long counts = votes.get(1).getVotesCountToday();
         Assert.assertEquals("Odessa mama", restaurantName);
         Assert.assertEquals(5, counts);
+    }
+
+    @Test
+    public void getVotesForCertainDate(){
+        LocalDate localDate = LocalDate.of(2021, 9,13);
+        List<VotesResponse> votes = service.getVotes(localDate);
+        long counts = votes.get(0).getVotesCountToday();
+        Assert.assertEquals(4, counts);
     }
 
     @Test

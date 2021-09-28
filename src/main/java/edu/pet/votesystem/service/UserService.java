@@ -4,17 +4,22 @@ import edu.pet.votesystem.model.Role;
 import edu.pet.votesystem.model.User;
 import edu.pet.votesystem.repository.UserRepository;
 import edu.pet.votesystem.util.Result;
-import edu.pet.votesystem.util.UserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,7 +58,7 @@ public class UserService {
     public Result update(User user, Long id) {
         LOGGER.info("Update user with id = {}", id);
 
-        User authUser = getAuthUser();
+        User authUser = ServiceUtil.getAuthUser(repository);
         Role authUserRole = authUser.getRole();
 
         if (id == null && authUserRole.equals(Role.ADMIN)) {
@@ -61,9 +66,9 @@ public class UserService {
                 String password = passwordEncoder.encode(user.getPassword());
                 user.setPassword(password);
                 repository.save(user);
-            } catch (Exception e) {
-                LOGGER.error(e.getMessage());
-                return Result.FAIL;
+            } catch (Exception ex) {
+                LOGGER.error(ex.getMessage());
+                throw new ValidationException(ex);
             }
             return Result.SUCCESS;
         }
@@ -84,7 +89,7 @@ public class UserService {
     public Result delete(Long id) {
         LOGGER.info("Delete user by id = {}", id);
 
-        User authUser = getAuthUser();
+        User authUser = ServiceUtil.getAuthUser(repository);
         Role authUserRole = authUser.getRole();
 
         boolean isUserChangeOwnData = userChangeOwnData(id, authUser);
@@ -102,8 +107,4 @@ public class UserService {
         return authUserId.equals(id);
     }
 
-    private User getAuthUser() {
-        String authenticationUserEmail = UserUtil.getAuthenticationUser();
-        return repository.findByEmail(authenticationUserEmail);
-    }
 }

@@ -13,8 +13,8 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rest_id", nullable = false, unique = true)
     private Long restaurantId;
-    @NotEmpty(message = "restaurant name should not be empty")
-    @Size(min = 2, max = 100, message = "restaurant name should be between 2 and 100 characters")
+    @NotEmpty
+    @Size(min = 2, max = 100, message = "restaurant's name should be between 2 and 100 characters")
     @Column(name = "rest_name", nullable = false)
     private String restaurantName;
     @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY,

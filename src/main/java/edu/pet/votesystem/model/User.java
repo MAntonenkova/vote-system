@@ -23,7 +23,7 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
     @Email(message = "email should be valid")
-    @NotEmpty(message = "email should be not empty")
+    @NotEmpty(message = "email should not be empty")
     @Column(name = "email", nullable = false, unique = true)
     private String email;
     @Column(name = "role")

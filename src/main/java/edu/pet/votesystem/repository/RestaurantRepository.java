@@ -18,7 +18,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
     @Modifying
     @Query("UPDATE Restaurant rest SET rest.restaurantName =:restName WHERE rest.restaurantId = :restId")
-    void updateName(@Param("restId") Integer restId, @Param("restName") String restName);
+    void updateName(@Param("restId") Long restId, @Param("restName") String restName);
 
     @Modifying
     @Query("DELETE FROM Restaurant  rest WHERE rest.restaurantId =:id")

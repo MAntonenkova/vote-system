@@ -23,9 +23,9 @@ public class Dish {
     @Column(name = "dish_name", nullable = false)
     private String dishName;
     @NotNull
-    @Column(name = "dish_price", nullable = false)
     @Positive
     @Min(value = 0, message = "dish price should be greater than zero")
+    @Column(name = "dish_price", nullable = false)
     private Integer price;
 
     public Long getDishId() {
@@ -60,4 +60,14 @@ public class Dish {
         this.price = price;
     }
 
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "dishId=" + dishId +
+                ", restaurantId=" + restaurant.getRestaurantId() +
+                ", restaurantName=" + restaurant.getRestaurantName() +
+                ", dishName='" + dishName + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }

@@ -30,7 +30,7 @@ CREATE TABLE vs_dishes
     dish_price INTEGER      NOT NULL,
     rest_id    INTEGER      NOT NULL,
     PRIMARY KEY (dish_id),
-    FOREIGN KEY (rest_id) REFERENCES vs_restaurants (rest_id) ON DELETE RESTRICT
+    FOREIGN KEY (rest_id) REFERENCES vs_restaurants (rest_id) ON DELETE CASCADE
 );
 
 CREATE TABLE vs_votes
@@ -41,7 +41,7 @@ CREATE TABLE vs_votes
     vote_date DATE    DEFAULT now() NOT NULL,
     vote_time TIME    DEFAULT now() NOT NULL,
     PRIMARY KEY (vote_id),
-    FOREIGN KEY (rest_id) REFERENCES vs_restaurants (rest_id) ON DELETE RESTRICT
+    FOREIGN KEY (rest_id) REFERENCES vs_restaurants (rest_id) ON DELETE CASCADE
 );
 
 CREATE

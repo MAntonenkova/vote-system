@@ -12,9 +12,16 @@ import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +29,7 @@ import java.util.Optional;
 import static edu.pet.votesystem.util.RestaurantUtil.putDishesToDishResponse;
 
 @Service
+@Validated
 public class RestaurantService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestaurantService.class);
@@ -33,7 +41,7 @@ public class RestaurantService {
     DishRepository dishRepository;
 
     @Transactional(readOnly = true)
-    public List<RestaurantsResponse> getAllRestaurants() {
+    public List<RestaurantsResponse> getAllRestaurantsWithDishes() {
         LOGGER.info("Get all restaurants with it's menu");
         List<Restaurant> restaurants = repository.getAllRestaurants();
         List<RestaurantsResponse> responseList = new ArrayList<>();
@@ -49,6 +57,12 @@ public class RestaurantService {
             responseList.add(response);
         }
         return responseList;
+    }
+
+    @Transactional
+    public List<Restaurant> getTotalRestaurants() {
+        LOGGER.info("Get total existing restaurants ");
+        return repository.findAll();
     }
 
     @Transactional(readOnly = true)
@@ -72,19 +86,27 @@ public class RestaurantService {
     }
 
     @Transactional
-    public Result updateRestaurant(Integer id, String name) {
+    public Result editRestaurant(Long id, String name) throws ConstraintViolationException {
         if (id != null) {
-            LOGGER.info("Edit restaurant with name = {}", id);
-            repository.updateName(id, name);
+            try {
+                LOGGER.info("Edit restaurant with name = {}", id);
+                repository.updateName(id, name);
+            }
+            catch (ValidationException ex) {
+                throw new ValidationException(ex);
+            }
         } else {
-
-            LOGGER.info("Add new restaurant with name = {}", name);
             Restaurant restaurant = new Restaurant();
             restaurant.setRestaurantName(name);
             try {
+                LOGGER.info("Save new restaurant with name = {}", name);
                 repository.save(restaurant);
+            } catch (ValidationException ex) {
+                throw new ValidationException(ex);
+
             } catch (Exception e) {
                 LOGGER.error(e.getMessage());
+                return Result.FAIL;
             }
         }
         return Result.SUCCESS;
@@ -97,7 +119,7 @@ public class RestaurantService {
     }
 
     @Transactional
-    public Result addDish(Long restId, DishRequest request) {
+    public Result saveDish(Long restId, DishRequest request) {
         LOGGER.info("Add dish with name = {} and price = {} to restaurant with id = {}", request.getDishName(), request.getDishPrice(), restId);
         Dish dish = new Dish();
         dish.setDishName(request.getDishName());
@@ -112,12 +134,17 @@ public class RestaurantService {
         Restaurant restaurant = new Restaurant();
         restaurant.setRestaurantId(restFromDb.getRestaurantId());
         restaurant.setRestaurantName(restFromDb.getRestaurantName());
-
         dish.setRestaurant(restaurant);
 
-        Long dishId = (dishRepository.save(dish)).getDishId();
-        if (dishId > 0) {
-            return Result.SUCCESS;
+        try {
+            LOGGER.info("Save dish with name = {} to repository", request.getDishName());
+            Long dishId = (dishRepository.save(dish)).getDishId();
+            if (dishId > 0) {
+                return Result.SUCCESS;
+            }
+        } catch (ValidationException ex) {
+            LOGGER.error("Validation exception for dish {}", dish.toString());
+            throw new ValidationException(ex);
         }
         return Result.FAIL;
     }
@@ -127,6 +154,7 @@ public class RestaurantService {
         LOGGER.info("Edit dish with id = {} and rest_id = {}", dishId, restId);
         Dish dish = dishRepository.getOne(dishId);
         if (dish == null) {
+            LOGGER.error("Dish with id = {} does not exist", dishId);
             return Result.FAIL;
         }
         dishRepository.updateDish(request.getDishName(), request.getDishPrice(), dishId);
@@ -136,6 +164,7 @@ public class RestaurantService {
     @Transactional
     public Result deleteDish(Long dishId) {
         if (dishRepository.findById(dishId).isEmpty()) {
+            LOGGER.error("Dish with id = {} does not exist", dishId);
             return Result.NO_SUCH_ENTRY_EXIST;
         }
         dishRepository.deleteById(dishId);
@@ -146,10 +175,24 @@ public class RestaurantService {
     public Dish getDish(Long dishId) {
         Optional<Dish> fop = dishRepository.findById(dishId);
         if (fop.isEmpty()) {
+            LOGGER.error("Dish with id = {} does not exist", dishId);
             return null;
         }
         Dish dish = fop.get();
         Hibernate.initialize(dish.getRestaurant());
         return dish;
     }
+
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleValidationException(ValidationException e) {
+        return new ResponseEntity<>("Not valid due to validation error: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException e) {
+        return new ResponseEntity<>("Not valid due to validation error: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 }

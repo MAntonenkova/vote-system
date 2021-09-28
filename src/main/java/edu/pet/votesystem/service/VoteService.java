@@ -1,13 +1,11 @@
 package edu.pet.votesystem.service;
 
 import edu.pet.votesystem.model.Restaurant;
-import edu.pet.votesystem.model.User;
 import edu.pet.votesystem.model.Vote;
 import edu.pet.votesystem.repository.RestaurantRepository;
 import edu.pet.votesystem.repository.UserRepository;
 import edu.pet.votesystem.repository.VoteRepository;
 import edu.pet.votesystem.util.Result;
-import edu.pet.votesystem.util.UserUtil;
 import edu.pet.votesystem.view.VotesResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,38 +52,31 @@ public class VoteService {
         LocalDate localDate = localDateTime.toLocalDate();
         LocalTime localTime = localDateTime.toLocalTime();
 
-        Long userId = getAuthUser().getId();
-
-        if (!userExist(userId)) {
-            LOGGER.info("User with id = {} does not exist", userId);
-            return Result.FAIL;
-        }
-
+        Long userId = ServiceUtil.getAuthUser(userRepository).getId();
         Vote voteDB = voteRepository.getVote(userId, localDate);
-        if (voteDB != null && localTime.isAfter(LAST_TIME_FOR_REVOTING)) {
-            return Result.YOU_HAVE_ALREADY_VOTED_TODAY;
+
+        if (voteDB != null) {
+            if (localTime.isAfter(LAST_TIME_FOR_REVOTING)) {
+                LOGGER.info("User {} has already voted today", userId);
+                return Result.YOU_HAVE_ALREADY_VOTED_TODAY;
+            }
+            if (localTime.isBefore(LAST_TIME_FOR_REVOTING)) {
+                Integer voteId = voteDB.getVoteId();
+                LOGGER.info("Update vote for user with id = {}, restaurant id = {}", userId, restId);
+                voteRepository.update(voteId, localTime, restId);
+                return Result.SUCCESS;
+            }
         }
 
-        Restaurant restaurant = restaurantFromDB(restId);
+        Restaurant restaurant = getRestaurantFromDB(restId);
         if (restaurant == null) {
             LOGGER.info("Restaurant with id = {} does not exist", restId);
             return Result.FAIL;
         }
 
-        if (voteDB != null && localTime.isBefore(LAST_TIME_FOR_REVOTING)) {
-            Integer voteId = voteDB.getVoteId();
-            LOGGER.info("Update vote for user with id = {}, restaurant id = {}", userId, restId);
-            voteRepository.update(voteId, localTime, restId);
-            return Result.SUCCESS;
-        }
+        Vote vote = setVote(localDate, localTime, userId, restaurant);
 
-        Vote vote = new Vote();
-        vote.setRestaurant(restaurant);
-        vote.setUserId(userId);
-        vote.setVoteDate(localDate);
-        vote.setVoteTime(localTime);
-
-        LOGGER.info("User with id = {} voting for restaurant with id = {}", userId, restId);
+        LOGGER.info("User with id = {} vote for restaurant with id = {}", userId, restId);
         voteRepository.save(vote);
         return Result.SUCCESS;
     }
@@ -106,7 +97,7 @@ public class VoteService {
     private VotesResponse getVoteResponse(Map.Entry<Long, Long> entry) {
         VotesResponse votesResponse = new VotesResponse();
         Optional<Restaurant> optional = restaurantRepository.findById(entry.getKey());
-        if(optional.isEmpty()){
+        if (optional.isEmpty()) {
             return null;
         }
         String restName = optional.get().getRestaurantName();
@@ -116,19 +107,17 @@ public class VoteService {
         return votesResponse;
     }
 
-    private Restaurant restaurantFromDB(Long restId) {
+    private Restaurant getRestaurantFromDB(Long restId) {
         Optional<Restaurant> restById = restaurantRepository.findById(restId);
         return restById.orElse(null);
     }
 
-    private boolean userExist(Long userId) {
-        Optional<User> userById = userRepository.findById(userId);
-        User user = userById.orElse(null);
-        return user != null;
-    }
-
-    private User getAuthUser() {
-        String authenticationUserEmail = UserUtil.getAuthenticationUser();
-        return userRepository.findByEmail(authenticationUserEmail);
+    private Vote setVote(LocalDate localDate, LocalTime localTime, Long userId, Restaurant restaurant) {
+        Vote vote = new Vote();
+        vote.setRestaurant(restaurant);
+        vote.setUserId(userId);
+        vote.setVoteDate(localDate);
+        vote.setVoteTime(localTime);
+        return vote;
     }
 }

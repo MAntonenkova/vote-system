@@ -20,21 +20,6 @@
 
     <beans:bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 
-    <!--    <authentication-manager>
-    &lt;!&ndash;                <authentication-provider user-service-ref="userDetailService"/>&ndash;&gt;
-
-            <authentication-provider>
-                <user-service>
-                    <user name="Viktor" password="{noop}admin" authorities="ROLE_ADMIN"/>
-                    <user name="Igor" password="{noop}admin" authorities="ROLE_ADMIN"/>
-                    <user name="Admin" password="{noop}admin" authorities="ROLE_ADMIN"/>
-                    <user name="Vasya" password="{noop}password" authorities="ROLE_USER"/>
-                    <user name="User" password="{noop}password" authorities="ROLE_USER"/>
-                </user-service>
-            </authentication-provider>
-        </authentication-manager>-->
-
-
     <authentication-manager>
         <authentication-provider
                 user-service-ref="userDetailService" >
